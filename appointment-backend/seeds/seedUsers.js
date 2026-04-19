@@ -8,19 +8,20 @@ const testUsers = [
     {
         name: 'Admin User',
         email: 'admin@example.com',
-        password: 'Admin@1234',
+        // In local development, we use a default. In production, these wouldn't be in a seed file.
+        password: process.env.SEED_ADMIN_PASSWORD || 'Admin@1234',
         role: 'admin',
     },
     {
         name: 'John Doe',
         email: 'user@example.com',
-        password: 'User@1234',
+        password: process.env.SEED_USER_PASSWORD || 'User@1234',
         role: 'user',
     },
     {
         name: 'Sarah Chen',
         email: 'sarah@example.com',
-        password: 'Sarah@1234',
+        password: process.env.SEED_USER_PASSWORD || 'Sarah@1234',
         role: 'user',
     },
 ];
