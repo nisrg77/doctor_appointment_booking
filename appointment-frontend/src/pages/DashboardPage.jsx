@@ -88,7 +88,7 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className="p-8 space-y-8 flex-1 w-full max-w-7xl mx-auto font-body">
+        <div className="p-4 sm:p-8 space-y-8 flex-1 w-full max-w-7xl mx-auto font-body">
             {/* Breadcrumbs & Headline */}
             <section>
                 <nav className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">
@@ -96,7 +96,7 @@ const DashboardPage = () => {
                     <span className="material-symbols-outlined text-[12px]">chevron_right</span>
                     <span className="text-secondary">My Appointments</span>
                 </nav>
-                <h2 className="font-headline text-4xl font-black text-on-surface tracking-tight">Clinical Appointments</h2>
+                <h2 className="font-headline text-3xl sm:text-4xl font-black text-on-surface tracking-tight">Clinical Appointments</h2>
             </section>
 
             {error && (
@@ -106,32 +106,32 @@ const DashboardPage = () => {
                 </div>
             )}
 
-            {/* Summary Section (Upcoming) - Asymmetric Layout */}
+            {/* Summary Section - Responsive Grid */}
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white rounded-xl p-8 shadow-sm border border-slate-100 flex flex-col md:flex-row gap-8 items-center overflow-hidden relative">
-                    <div className="absolute top-0 right-0 p-8 opacity-10">
+                <div className="lg:col-span-2 bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col md:flex-row gap-8 items-center overflow-hidden relative min-h-[220px]">
+                    <div className="absolute top-0 right-0 p-8 opacity-10 hidden sm:block">
                         <span className="material-symbols-outlined text-8xl" style={{ fontVariationSettings: "'FILL' 1" }}>event_available</span>
                     </div>
                     <div className="z-10 text-center md:text-left w-full">
                         {upcomingAppt ? (
                             <>
                                 <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full mb-4">UPCOMING SESSION</span>
-                                <h3 className="font-headline text-2xl font-bold text-slate-900 mb-2">{upcomingAppt.service?.name || 'Upcoming Appointment'}</h3>
-                                <p className="text-slate-500 text-sm max-w-sm mb-6 leading-relaxed">
+                                <h3 className="font-headline text-xl sm:text-2xl font-bold text-slate-900 mb-2">{upcomingAppt.service?.name || 'Upcoming Appointment'}</h3>
+                                <p className="text-slate-500 text-xs sm:text-sm max-w-sm mb-6 leading-relaxed">
                                     Your next appointment is scheduled. Please ensure you have any necessary requirements ready.
                                 </p>
-                                <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                                    <div className="bg-surface-container-low px-4 py-2 rounded-lg">
+                                <div className="flex flex-col sm:flex-row gap-4">
+                                    <div className="bg-slate-50 px-4 py-2 rounded-lg flex-1">
                                         <p className="text-[10px] text-slate-400 uppercase font-bold">Date</p>
-                                        <p className="font-bold text-on-surface">{formatDate(upcomingAppt.date)}</p>
+                                        <p className="font-bold text-on-surface text-sm">{formatDate(upcomingAppt.date)}</p>
                                     </div>
-                                    <div className="bg-surface-container-low px-4 py-2 rounded-lg">
+                                    <div className="bg-slate-50 px-4 py-2 rounded-lg flex-1">
                                         <p className="text-[10px] text-slate-400 uppercase font-bold">Time</p>
-                                        <p className="font-bold text-on-surface">{upcomingAppt.time}</p>
+                                        <p className="font-bold text-on-surface text-sm">{upcomingAppt.time}</p>
                                     </div>
-                                    <div className="bg-surface-container-low px-4 py-2 rounded-lg">
+                                    <div className="bg-slate-50 px-4 py-2 rounded-lg flex-1">
                                         <p className="text-[10px] text-slate-400 uppercase font-bold">Status</p>
-                                        <p className="font-bold text-on-surface uppercase text-xs mt-1 text-blue-500">{upcomingAppt.status}</p>
+                                        <p className="font-bold text-blue-500 uppercase text-[10px] mt-1">{upcomingAppt.status}</p>
                                     </div>
                                 </div>
                             </>
@@ -139,7 +139,7 @@ const DashboardPage = () => {
                             <>
                                 <h3 className="font-headline text-2xl font-bold text-slate-900 mb-4">No upcoming bookings</h3>
                                 <p className="text-slate-500 text-sm max-w-sm mb-6 leading-relaxed">Schedule a new clinical service from our available catalog.</p>
-                                <Link to="/services" className="inline-block bg-secondary text-white px-8 py-3 rounded-lg font-bold text-sm shadow-xl shadow-secondary/20 hover:scale-[1.02] transition-transform">
+                                <Link to="/services" className="inline-block w-full sm:w-auto bg-slate-900 text-white px-8 py-3 rounded-xl font-bold text-sm shadow-xl shadow-slate-900/20 hover:scale-[1.02] transition-transform text-center">
                                     Book New Service
                                 </Link>
                             </>
@@ -147,33 +147,34 @@ const DashboardPage = () => {
                     </div>
                 </div>
 
-                <div className="bg-secondary-fixed text-on-secondary-fixed p-8 rounded-xl flex flex-col justify-between shadow-sm">
-                    <div>
-                        <p className="text-[10px] uppercase font-black tracking-widest opacity-60 mb-1">Analytics</p>
-                        <h4 className="font-headline text-2xl font-bold">Patient Velocity</h4>
+                <div className="bg-secondary text-white p-6 sm:p-8 rounded-xl flex flex-col justify-between shadow-sm relative overflow-hidden">
+                    <div className="absolute -bottom-4 -right-4 opacity-10">
+                         <span className="material-symbols-outlined text-9xl">monitoring</span>
                     </div>
-                    <div className="py-4 font-headline text-5xl font-black">
+                    <div className="z-10">
+                        <p className="text-[10px] uppercase font-black tracking-widest opacity-60 mb-1">Activity</p>
+                        <h4 className="font-headline text-2xl font-bold">History</h4>
+                    </div>
+                    <div className="z-10 py-6 sm:py-4 font-headline text-5xl font-black">
                         {appointments.length}
                     </div>
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <span className="text-xs block font-medium opacity-70">Total Lifetime Appointments</span>
-                        </div>
-                        <span className="material-symbols-outlined text-4xl opacity-20">monitoring</span>
+                    <div className="z-10 flex justify-between items-center">
+                        <span className="text-xs block font-medium opacity-70">Total Appointments</span>
+                        <span className="material-symbols-outlined text-2xl opacity-50">trending_up</span>
                     </div>
                 </div>
             </section>
 
-            {/* Booking History Table */}
+            {/* Booking History Table / Cards */}
             <section className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <div className="px-8 py-6 flex flex-col md:flex-row md:items-center justify-between border-b border-slate-50 gap-4">
+                <div className="px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-50 gap-4">
                     <h3 className="font-headline text-lg font-bold text-on-surface">Booking History</h3>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
                         {['ALL', 'PENDING', 'APPROVED', 'COMPLETED', 'CANCELLED'].map(tab => (
                             <button 
                                 key={tab}
                                 onClick={() => setFilterCategory(tab)}
-                                className={`text-[10px] font-bold px-3 py-1 rounded-full transition-colors ${filterCategory === tab ? 'bg-surface-container-low text-on-surface' : 'text-slate-400 hover:bg-slate-50'}`}
+                                className={`text-[9px] sm:text-[10px] font-bold px-3 py-1.5 rounded-full transition-colors whitespace-nowrap ${filterCategory === tab ? 'bg-slate-100 text-slate-800' : 'text-slate-400 hover:bg-slate-50'}`}
                             >
                                 {tab}
                             </button>
@@ -181,11 +182,12 @@ const DashboardPage = () => {
                     </div>
                 </div>
                 
-                <div className="overflow-x-auto">
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="bg-surface-container-lowest text-slate-400 uppercase text-[10px] font-bold tracking-widest">
-                                <th className="px-8 py-4">Service & Provider</th>
+                            <tr className="bg-slate-50/50 text-slate-400 uppercase text-[10px] font-bold tracking-widest">
+                                <th className="px-8 py-4">Service</th>
                                 <th className="px-8 py-4">Date & Time</th>
                                 <th className="px-8 py-4">Status</th>
                                 <th className="px-8 py-4 text-right">Actions</th>
@@ -194,33 +196,32 @@ const DashboardPage = () => {
                         <tbody className="divide-y divide-slate-50">
                             {appointments.length === 0 ? (
                                 <tr>
-                                    <td colSpan="4" className="px-8 py-8 text-center text-sm text-slate-500">No appointments found.</td>
+                                    <td colSpan="4" className="px-8 py-12 text-center text-sm text-slate-500">No appointments found.</td>
                                 </tr>
                             ) : displayAppointments.length === 0 ? (
                                 <tr>
-                                    <td colSpan="4" className="px-8 py-8 text-center text-sm text-slate-500">No {filterCategory.toLowerCase()} appointments found.</td>
+                                    <td colSpan="4" className="px-8 py-12 text-center text-sm text-slate-500">No {filterCategory.toLowerCase()} appointments.</td>
                                 </tr>
                             ) : (
                                 displayAppointments.map(appt => {
                                     const styles = getStatusStyle(appt.status);
-                                    const isCancelledOrRejected = ['cancelled', 'rejected'].includes(appt.status);
                                     return (
-                                        <tr key={appt._id} className={`hover:bg-surface-container-low transition-colors group ${isCancelledOrRejected ? 'opacity-60' : ''}`}>
+                                        <tr key={appt._id} className="hover:bg-slate-50/50 transition-colors group">
                                             <td className="px-8 py-5">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-secondary shrink-0">
+                                                    <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                                                         <span className="material-symbols-outlined">medical_services</span>
                                                     </div>
                                                     <div>
                                                         <p className="font-bold text-on-surface text-sm">{appt.service?.name}</p>
-                                                        <p className="text-xs text-slate-400">{appt.service?.category}</p>
+                                                        <p className="text-[10px] text-slate-400">{appt.service?.category}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="px-8 py-5">
                                                 <div className="text-sm">
-                                                    <p className="font-medium text-on-surface">{formatDate(appt.date)}</p>
-                                                    <p className="text-slate-400">{appt.time}</p>
+                                                    <p className="font-bold text-slate-700">{formatDate(appt.date)}</p>
+                                                    <p className="text-xs text-slate-400">{appt.time}</p>
                                                 </div>
                                             </td>
                                             <td className="px-8 py-5">
@@ -230,15 +231,13 @@ const DashboardPage = () => {
                                                 </span>
                                             </td>
                                             <td className="px-8 py-5 text-right">
-                                                {['pending', 'approved'].includes(appt.status) ? (
+                                                {['pending', 'approved'].includes(appt.status) && (
                                                     <button 
                                                         onClick={() => handleCancelClick(appt)}
-                                                        className="text-xs font-bold text-error hover:underline transition-opacity md:opacity-0 md:group-hover:opacity-100"
+                                                        className="text-[10px] font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all"
                                                     >
                                                         Cancel
                                                     </button>
-                                                ) : (
-                                                    <span className="text-[10px] text-slate-400 font-medium">No actions</span>
                                                 )}
                                             </td>
                                         </tr>
@@ -247,6 +246,55 @@ const DashboardPage = () => {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="md:hidden divide-y divide-slate-50">
+                    {appointments.length === 0 ? (
+                        <div className="p-12 text-center text-sm text-slate-500">No appointments found.</div>
+                    ) : displayAppointments.length === 0 ? (
+                         <div className="p-12 text-center text-sm text-slate-500">No {filterCategory.toLowerCase()} appointments.</div>
+                    ) : (
+                        displayAppointments.map(appt => {
+                            const styles = getStatusStyle(appt.status);
+                            return (
+                                <div key={appt._id} className="p-6 space-y-4">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                                                <span className="material-symbols-outlined">medical_services</span>
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-slate-800 text-sm">{appt.service?.name}</p>
+                                                <p className="text-[10px] text-slate-400">{appt.service?.category}</p>
+                                            </div>
+                                        </div>
+                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-bold ${styles.bg} ${styles.text}`}>
+                                            {appt.status.toUpperCase()}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center bg-slate-50 p-3 rounded-xl">
+                                        <div className="flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-sm text-slate-400">calendar_today</span>
+                                            <span className="text-[10px] font-bold text-slate-600">{formatDate(appt.date)}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-sm text-slate-400">schedule</span>
+                                            <span className="text-[10px] font-bold text-slate-600">{appt.time}</span>
+                                        </div>
+                                    </div>
+                                    {['pending', 'approved'].includes(appt.status) && (
+                                        <button 
+                                            onClick={() => handleCancelClick(appt)}
+                                            className="w-full py-2.5 text-xs font-bold text-red-500 border border-red-100 rounded-xl hover:bg-red-50 transition-colors"
+                                        >
+                                            Cancel Appointment
+                                        </button>
+                                    )}
+                                </div>
+                            );
+                        })
+                    )}
                 </div>
             </section>
 
