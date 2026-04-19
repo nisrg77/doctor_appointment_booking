@@ -22,10 +22,14 @@ connectDB();
 // ORDER MATTERS — middleware runs top to bottom.
 // ─────────────────────────────────────────────────────────────────
 
-app.use(cors());
+
 // WHY cors()? Our React app runs on localhost:3000. Our API is on localhost:5000.
 // Browsers block cross-origin requests by default (CORS policy).
 // cors() tells the browser: "this server allows requests from other origins."
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true,
+}));
 
 app.use(express.json());
 // WHY express.json()? When React sends POST data (e.g., { email, password }),
