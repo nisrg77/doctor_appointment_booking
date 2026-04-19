@@ -1,7 +1,6 @@
 require('dotenv').config();         // MUST be first — loads .env variables
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const connectDB = require('./config/db');
 
 const app = express();
@@ -62,23 +61,10 @@ app.use('/api/services', require('./routes/serviceRoutes'));
 app.use('/api/appointments', require('./routes/appointmentRoutes'));
 
 // ─────────────────────────────────────────────────────────────────
-// STEP 3.5: SERVE FRONTEND (PRODUCTION)
-//
-// In production, we serve the built React files from the dist/ folder.
-// This allows us to run the whole app on a single port (e.g., 5000).
+// NOTE: Frontend is deployed separately on Vercel.
+// This backend is a pure REST API — it does NOT serve static files.
+// All React routing is handled by Vercel, not this server.
 // ─────────────────────────────────────────────────────────────────
-if (process.env.NODE_ENV === 'production') {
-    // Serve static assets
-    app.use(express.static(path.join(__dirname, '../appointment-frontend/dist')));
-
-    // Handle React routing, return all non-API requests to index.html
-    // NOTE: Express 5 requires named wildcards — bare '*' throws a PathError
-    app.get('/{*path}', (req, res, next) => {
-        // Only if it doesn't match an API route
-        if (req.url.startsWith('/api')) return next();
-        res.sendFile(path.join(__dirname, '../appointment-frontend/dist', 'index.html'));
-    });
-}
 
 // ─────────────────────────────────────────────────────────────────
 // STEP 4: 404 HANDLER
