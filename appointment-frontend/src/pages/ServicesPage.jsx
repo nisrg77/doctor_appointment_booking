@@ -164,13 +164,13 @@ const ServicesPage = () => {
     }
 
     return (
-        <div className="flex flex-col xl:flex-row h-full bg-[#f4f7fa] overflow-hidden">
+        <div className="flex flex-col xl:flex-row xl:h-full bg-[#f4f7fa] xl:overflow-hidden">
             {/* Main Center Column */}
-            <div className="flex-1 overflow-y-auto px-4 sm:px-10 py-8 scrollbar-hide">
+            <div className="w-full xl:flex-1 xl:overflow-y-auto px-4 sm:px-10 py-8 scrollbar-hide">
                 <header className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">Make appointment</h1>
                     <button 
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        onClick={() => document.getElementById('doctor-profile')?.scrollIntoView({ behavior: 'smooth' })}
                         className="xl:hidden w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-400"
                     >
                         <span className="material-symbols-outlined">person</span>
@@ -339,7 +339,10 @@ const ServicesPage = () => {
             </div>
 
             {/* Right Panel - Profile View */}
-            <div className={`w-full xl:w-[380px] bg-white border-l border-slate-100 overflow-y-auto p-6 sm:p-8 transition-all duration-300 ${selectedDoctor ? 'block' : 'hidden xl:block'}`}>
+            <div 
+                id="doctor-profile"
+                className={`w-full xl:w-[380px] bg-white border-t xl:border-t-0 xl:border-l border-slate-100 xl:overflow-y-auto p-6 sm:p-8 transition-all duration-300 ${selectedDoctor ? 'block' : 'hidden xl:block'}`}
+            >
                 <div className="flex flex-col items-center text-center">
                     <div className="relative mb-6">
                         <img 
