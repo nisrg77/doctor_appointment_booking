@@ -91,7 +91,11 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         // STEP 1: Get email and password from request body
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        
+        // Trim whitespace to prevent common login failures
+        if (email) email = email.trim();
+        if (password) password = password.trim();
 
         // STEP 2: Basic validation
         if (!email || !password) {
