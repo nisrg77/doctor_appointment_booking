@@ -1,31 +1,86 @@
-# Dependencies
+# ==============================================
+# NODE MODULES — never commit these
+# ==============================================
 node_modules/
-appointment-frontend/node_modules/
 appointment-backend/node_modules/
+appointment-frontend/node_modules/
 
-# Environment variables
+# ==============================================
+# ENVIRONMENT VARIABLES — keep secrets safe
+# ==============================================
 .env
 .env.local
+.env.development
 .env.development.local
+.env.test
 .env.test.local
+.env.production
 .env.production.local
+appointment-backend/.env
+appointment-frontend/.env
 
-# Build output
+# ==============================================
+# BUILD OUTPUT — generated files, not source
+# ==============================================
 dist/
 build/
 appointment-frontend/dist/
+appointment-frontend/build/
 
-# Logs
+# ==============================================
+# LOGS
+# ==============================================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-logs/
+pnpm-debug.log*
 *.log
+logs/
 
-# OS files
+# ==============================================
+# OS FILES
+# ==============================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
 
-# Editor
+# ==============================================
+# EDITOR & IDE
+# ==============================================
 .vscode/
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+
+# ==============================================
+# COVERAGE & TESTING
+# ==============================================
+coverage/
+.nyc_output/
+*.lcov
+
+# ==============================================
+# PARCEL / VITE CACHE
+# ==============================================
+.cache/
+.parcel-cache/
+.vite/
+appointment-frontend/.vite/
+
+# ==============================================
+# MISC
+# ==============================================
+*.pem
+*.key
+*.cert
+*.p12

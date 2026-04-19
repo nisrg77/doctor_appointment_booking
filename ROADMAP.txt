@@ -1,0 +1,349 @@
+================================================================================
+  DOCTOR APPOINTMENT BOOKING SYSTEM — PROJECT ROADMAP
+  A beginner-friendly guide to how this MERN project was built step by step
+================================================================================
+
+TECH STACK OVERVIEW
+-------------------
+  Frontend : React (Vite) + Tailwind CSS + React Router
+  Backend  : Node.js + Express.js
+  Database : MongoDB (via Mongoose)
+  Auth     : JWT (JSON Web Tokens) + bcryptjs for password hashing
+  HTTP     : Axios (frontend ↔ backend communication)
+
+
+================================================================================
+  STAGE 1 — PROJECT SETUP
+================================================================================
+
+  1.1  Create the root folder  →  d:\MERN\
+  1.2  Initialize the root package.json
+         npm init -y
+  1.3  Install concurrently (to run backend + frontend together)
+         npm install concurrently
+  1.4  Set up root-level scripts in package.json:
+         "dev"   → runs backend & frontend simultaneously
+         "start" → production start
+
+  WHY? A monorepo structure keeps backend and frontend in one Git repo,
+  making it easier to share, deploy, and manage as a single project.
+
+
+================================================================================
+  STAGE 2 — BACKEND SETUP  (appointment-backend/)
+================================================================================
+
+  2.1  Create the /appointment-backend folder
+  2.2  Initialize backend:
+         cd appointment-backend
+         npm init -y
+  2.3  Install backend dependencies:
+         npm install express mongoose bcryptjs jsonwebtoken cors dotenv
+         npm install --save-dev nodemon
+
+  2.4  Create index.js  →  the main entry point
+         - Connect to MongoDB using Mongoose
+         - Set up Express app with middleware (cors, json parser)
+         - Register all route modules
+         - Start the server on PORT from .env
+
+  2.5  Create a .env file for secrets:
+         PORT=5000
+         MONGO_URI=<your mongodb connection string>
+         JWT_SECRET=<a long random secret string>
+
+  WHY .env? Secrets should NEVER be hardcoded in code or pushed to GitHub.
+  The .gitignore file makes sure .env is excluded from version control.
+
+
+================================================================================
+  STAGE 3 — DATABASE MODELS  (appointment-backend/models/)
+================================================================================
+
+  Models define the shape of data stored in MongoDB.
+
+  3.1  User.js
+         Fields: name, email, password (hashed), role (user/admin)
+         Purpose: Stores registered users
+
+  3.2  Service.js
+         Fields: name, description, duration, price, isActive
+         Purpose: Represents medical/appointment services offered
+
+  3.3  Appointment.js
+         Fields: user (ref→User), service (ref→Service), doctor, date,
+                 timeSlot, status (pending/confirmed/cancelled), notes
+         Purpose: Stores each booking made by a user
+
+  WHY Mongoose Models? They act as a blueprint (schema) for your data
+  and provide easy methods to query, insert, and update documents in MongoDB.
+
+
+================================================================================
+  STAGE 4 — AUTHENTICATION  (authRoutes + authController)
+================================================================================
+
+  This is the most important stage — it controls WHO can access WHAT.
+
+  4.1  Register route  →  POST /api/auth/register
+         - Validate that email isn't already taken
+         - Hash the password using bcryptjs
+         - Save new user to MongoDB
+         - Return a JWT token
+
+  4.2  Login route  →  POST /api/auth/login
+         - Find user by email
+         - Compare submitted password with stored hash (bcryptjs.compare)
+         - If match → generate JWT token and send it back
+
+  4.3  Get Profile  →  GET /api/auth/profile
+         - Protected route (requires valid JWT in Authorization header)
+         - Returns current logged-in user's data
+
+  4.4  JWT Middleware  (middleware/authMiddleware.js)
+         - Extracts token from "Authorization: Bearer <token>" header
+         - Verifies it with JWT_SECRET
+         - Attaches decoded user info to req.user
+         - Protects any route by wrapping it with this middleware
+
+  WHY JWT? It's stateless — the server doesn't store sessions.
+  The token itself contains the user identity and is verified on each request.
+
+
+================================================================================
+  STAGE 5 — SERVICES API  (serviceRoutes + serviceController)
+================================================================================
+
+  5.1  GET    /api/services        →  List all active services (public)
+  5.2  POST   /api/services        →  Create a service (admin only)
+  5.3  PUT    /api/services/:id    →  Update a service (admin only)
+  5.4  DELETE /api/services/:id    →  Delete a service (admin only)
+
+  Admin-only routes use a second middleware: adminMiddleware
+  which checks if req.user.role === 'admin' before allowing access.
+
+
+================================================================================
+  STAGE 6 — APPOINTMENTS API  (appointmentRoutes + appointmentController)
+================================================================================
+
+  6.1  POST   /api/appointments           →  Book an appointment (logged-in users)
+  6.2  GET    /api/appointments/my        →  My appointments (logged-in user)
+  6.3  GET    /api/appointments           →  All appointments (admin)
+  6.4  PUT    /api/appointments/:id/status →  Update status (admin)
+  6.5  DELETE /api/appointments/:id       →  Cancel appointment
+
+  Appointments link a User + a Service + a time slot together.
+
+
+================================================================================
+  STAGE 7 — FRONTEND SETUP  (appointment-frontend/)
+================================================================================
+
+  7.1  Bootstrap with Vite + React:
+         npm create vite@latest appointment-frontend -- --template react
+  7.2  Install frontend dependencies:
+         npm install react-router-dom axios tailwindcss postcss autoprefixer
+  7.3  Configure Tailwind CSS:
+         npx tailwindcss init -p
+         Add paths to tailwind.config.js
+         Import Tailwind directives in index.css
+
+  7.4  Set up .env for frontend:
+         VITE_API_URL=http://localhost:5000/api
+         (Vite exposes env vars prefixed with VITE_ to the browser)
+
+
+================================================================================
+  STAGE 8 — FRONTEND ARCHITECTURE  (appointment-frontend/src/)
+================================================================================
+
+  8.1  main.jsx
+         → App entry point, wraps app in <BrowserRouter> and <AuthProvider>
+
+  8.2  App.jsx
+         → Defines all routes using React Router
+         → Uses route guards (ProtectedRoute, AdminRoute, GuestRoute)
+
+  8.3  context/AuthContext.jsx
+         → React Context that stores user login state globally
+         → Provides login(), logout(), user, token to all components
+         → Persists token in localStorage so refresh doesn't log you out
+
+  8.4  api/axios.js
+         → Creates a pre-configured Axios instance pointing to VITE_API_URL
+         → Automatically attaches JWT token to every request via interceptor
+
+  8.5  Route Guard Components  (src/components/)
+         ProtectedRoute.jsx  → Redirects to /login if not authenticated
+         AdminRoute.jsx      → Redirects to /dashboard if not admin
+         GuestRoute.jsx      → Redirects to /dashboard if already logged in
+
+
+================================================================================
+  STAGE 9 — PAGES  (appointment-frontend/src/pages/)
+================================================================================
+
+  9.1  HomePage.jsx
+         → Public landing page
+         → Shows features, services, hero section
+
+  9.2  LoginPage.jsx
+         → Form: email + password
+         → Calls POST /api/auth/login
+         → Saves token via AuthContext, redirects to /dashboard
+
+  9.3  RegisterPage.jsx
+         → Form: name + email + password
+         → Calls POST /api/auth/register
+         → Auto-logs in on success
+
+  9.4  DashboardPage.jsx
+         → Protected page (logged-in users only)
+         → Shows upcoming appointments, quick stats, booking interface
+         → Sidebar layout with 3-column booking panel
+
+  9.5  ServicesPage.jsx
+         → Admin-only page
+         → Lists all services with CRUD controls (add/edit/delete)
+         → Uses modal forms for create/update
+
+  9.6  admin/  (admin-specific pages)
+         → Appointment management for admins
+
+  9.7  NotFoundPage.jsx
+         → 404 fallback page
+
+
+================================================================================
+  STAGE 10 — LAYOUT & NAVIGATION
+================================================================================
+
+  10.1  SidebarLayout.jsx
+          → Persistent left sidebar for authenticated pages
+          → Shows nav links + user info + logout button
+
+  10.2  Navbar.jsx
+          → Top navigation for public pages (Home, Login, Register)
+
+
+================================================================================
+  STAGE 11 — VERSION CONTROL & GITHUB
+================================================================================
+
+  11.1  Create .gitignore
+          → Excludes: node_modules/, .env, dist/, build/, logs/
+          → NEVER push node_modules (it's huge) or .env (it has secrets)
+
+  11.2  Initialize Git:
+          git init
+          git add .
+          git commit -m "Initial commit"
+
+  11.3  Push to GitHub:
+          git remote add origin https://github.com/nisrg77/doctor_appointment_booking.git
+          git branch -M main
+          git push -u origin main
+
+  11.4  After cloning, restore dependencies:
+          cd appointment-backend  →  npm install
+          cd appointment-frontend →  npm install
+
+
+================================================================================
+  FOLDER STRUCTURE REFERENCE
+================================================================================
+
+  d:\MERN\
+  ├── package.json               ← Root: concurrently scripts
+  ├── .env                       ← Root-level env (if any)
+  ├── .gitignore                 ← Git exclusions
+  ├── ROADMAP.txt                ← This file!
+  ├── DEPLOYMENT.md              ← Deployment guide
+  ├── requirements.txt           ← Dependency summary
+  │
+  ├── appointment-backend/
+  │   ├── index.js               ← Server entry point
+  │   ├── .env                   ← Backend secrets (not in Git)
+  │   ├── package.json
+  │   ├── config/
+  │   │   └── db.js              ← MongoDB connection
+  │   ├── models/
+  │   │   ├── User.js
+  │   │   ├── Service.js
+  │   │   └── Appointment.js
+  │   ├── controllers/
+  │   │   ├── authController.js
+  │   │   ├── serviceController.js
+  │   │   └── appointmentController.js
+  │   ├── routes/
+  │   │   ├── authRoutes.js
+  │   │   ├── serviceRoutes.js
+  │   │   └── appointmentRoutes.js
+  │   ├── middleware/
+  │   │   ├── authMiddleware.js
+  │   │   └── adminMiddleware.js
+  │   └── utils/
+  │       └── generateToken.js
+  │
+  └── appointment-frontend/
+      ├── index.html
+      ├── vite.config.js
+      ├── tailwind.config.js
+      ├── .env                   ← Frontend env (not in Git)
+      └── src/
+          ├── main.jsx
+          ├── App.jsx
+          ├── index.css
+          ├── api/
+          │   └── axios.js
+          ├── context/
+          │   └── AuthContext.jsx
+          ├── components/
+          │   ├── Navbar.jsx
+          │   ├── SidebarLayout.jsx
+          │   ├── ProtectedRoute.jsx
+          │   ├── AdminRoute.jsx
+          │   └── GuestRoute.jsx
+          └── pages/
+              ├── HomePage.jsx
+              ├── LoginPage.jsx
+              ├── RegisterPage.jsx
+              ├── DashboardPage.jsx
+              ├── ServicesPage.jsx
+              └── NotFoundPage.jsx
+
+
+================================================================================
+  KEY CONCEPTS FOR BEGINNERS
+================================================================================
+
+  JWT (JSON Web Token)
+    → A secure string that proves who you are after login.
+    → Sent in every request: "Authorization: Bearer <token>"
+    → Expires after a set time (e.g. 7 days).
+
+  Middleware
+    → Functions that run BETWEEN a request arriving and your route handler.
+    → Example: authMiddleware checks if you're logged in before
+      allowing access to protected routes.
+
+  REST API
+    → A way for the frontend to talk to the backend using HTTP methods:
+      GET (read), POST (create), PUT (update), DELETE (remove)
+
+  React Context
+    → A built-in React feature to share state (like login info) across
+      all components without "prop drilling."
+
+  Mongoose Schema
+    → Defines what fields a MongoDB document has and what type they are.
+
+  CORS
+    → "Cross-Origin Resource Sharing" — browser security that blocks
+      requests from one domain (frontend) to another (backend).
+      The cors npm package tells Express to allow it.
+
+================================================================================
+  END OF ROADMAP
+================================================================================

@@ -1,0 +1,140 @@
+================================================================================
+  DOCTOR APPOINTMENT BOOKING SYSTEM — REQUIREMENTS
+  (MERN Stack Project — Not a Python project, so this lists all
+   runtime dependencies with their purpose for documentation purposes)
+================================================================================
+
+RUNTIME ENVIRONMENT
+-------------------
+  Node.js        >= 18.x     https://nodejs.org
+  npm            >= 9.x      (bundled with Node.js)
+  MongoDB        >= 6.x      https://www.mongodb.com  (local or Atlas cloud)
+
+
+================================================================================
+  BACKEND DEPENDENCIES  (appointment-backend/package.json)
+================================================================================
+
+  PACKAGE          VERSION    PURPOSE
+  ───────────────────────────────────────────────────────────────────────────
+  express          ^5.2.1     Web framework — handles HTTP routes & middleware
+  mongoose         ^9.4.1     ODM for MongoDB — defines schemas and queries
+  bcryptjs         ^3.0.3     Password hashing — secures stored passwords
+  jsonwebtoken     ^9.0.3     JWT auth — creates & verifies login tokens
+  cors             ^2.8.6     Cross-Origin Resource Sharing — allows frontend
+                              (port 5173) to talk to backend (port 5000)
+  dotenv           ^17.4.1    Loads .env variables into process.env
+
+  DEV DEPENDENCIES
+  ───────────────────────────────────────────────────────────────────────────
+  nodemon          ^3.1.14    Auto-restarts server on file changes (dev only)
+
+
+  INSTALL COMMAND:
+    cd appointment-backend
+    npm install
+
+
+================================================================================
+  FRONTEND DEPENDENCIES  (appointment-frontend/package.json)
+================================================================================
+
+  PACKAGE               VERSION    PURPOSE
+  ───────────────────────────────────────────────────────────────────────────
+  react                 ^19.2.4    Core UI library
+  react-dom             ^19.2.4    Renders React into the browser DOM
+  react-router-dom      ^7.14.1    Client-side routing (pages, navigation)
+  axios                 ^1.15.0    HTTP client — calls the backend REST API
+  tailwindcss           ^3.4.19    Utility-first CSS framework for styling
+  postcss               ^8.5.10    CSS processing (required by Tailwind)
+  autoprefixer          ^10.5.0    Adds vendor prefixes to CSS (required by Tailwind)
+
+  DEV DEPENDENCIES
+  ───────────────────────────────────────────────────────────────────────────
+  vite                  ^8.0.4     Fast frontend build tool & dev server
+  @vitejs/plugin-react  ^6.0.1     Vite plugin for React (JSX, HMR)
+  eslint                ^9.39.4    JavaScript linter for code quality
+  eslint-plugin-react-hooks ^7.0.1 ESLint rules for React Hooks
+  eslint-plugin-react-refresh ^0.5.2 ESLint rules for Vite fast refresh
+  @types/react          ^19.2.14   TypeScript types for React (IDE support)
+  @types/react-dom      ^19.2.3    TypeScript types for ReactDOM (IDE support)
+  globals               ^17.4.0    Global variable definitions for ESLint
+
+  INSTALL COMMAND:
+    cd appointment-frontend
+    npm install
+
+
+================================================================================
+  ROOT-LEVEL DEPENDENCIES  (d:\MERN\package.json)
+================================================================================
+
+  PACKAGE          VERSION    PURPOSE
+  ───────────────────────────────────────────────────────────────────────────
+  concurrently     (latest)   Runs backend & frontend dev servers simultaneously
+
+  INSTALL COMMAND:
+    cd d:\MERN
+    npm install
+
+
+================================================================================
+  ENVIRONMENT VARIABLES REQUIRED
+================================================================================
+
+  — appointment-backend/.env —
+    PORT=5000
+    MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/<dbname>
+    JWT_SECRET=<a_long_random_secret_string>
+
+  — appointment-frontend/.env —
+    VITE_API_URL=http://localhost:5000/api
+
+  ⚠ WARNING: Never commit .env files to Git. They are excluded via .gitignore.
+
+
+================================================================================
+  HOW TO INSTALL EVERYTHING FROM SCRATCH
+================================================================================
+
+  Step 1 — Clone the repo:
+    git clone https://github.com/nisrg77/doctor_appointment_booking.git
+    cd doctor_appointment_booking
+
+  Step 2 — Install root dependencies:
+    npm install
+
+  Step 3 — Install backend dependencies:
+    cd appointment-backend
+    npm install
+    cd ..
+
+  Step 4 — Install frontend dependencies:
+    cd appointment-frontend
+    npm install
+    cd ..
+
+  Step 5 — Create .env files:
+    • Copy the variables listed above into appointment-backend/.env
+    • Copy the variables listed above into appointment-frontend/.env
+
+  Step 6 — Run the full stack in development mode:
+    npm run dev        (from the root d:\MERN\ directory)
+
+  The backend will start on  →  http://localhost:5000
+  The frontend will start on →  http://localhost:5173
+
+
+================================================================================
+  EXTERNAL SERVICES REQUIRED
+================================================================================
+
+  MongoDB Atlas (free tier)
+    → Sign up at https://cloud.mongodb.com
+    → Create a free cluster
+    → Get connection string for MONGO_URI
+
+  GitHub
+    → Repository: https://github.com/nisrg77/doctor_appointment_booking
+
+================================================================================
