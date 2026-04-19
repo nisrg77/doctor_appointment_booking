@@ -137,7 +137,6 @@ const SidebarLayout = () => {
             </main>
         </div>
     );
-    );
 };
 
 export default SidebarLayout;
